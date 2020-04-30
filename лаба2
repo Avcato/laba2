@@ -1,0 +1,114 @@
+Задание 1. Описать функцию Norm2(A, M, N) вещественного типа, вычисляю-
+    щую норму вещественной матрицы A размера M × N:
+                  Norm2(A, M, N) = max {|AI,1| + |AI,2| + … + |AI,N|},
+    где максимум берется по всем I от 1 до M. Для данной матрицы A размера
+    M × N найти Norm2(A, K, N), K = 1, …, M.
+#include <iostream>
+#include <iomanip>
+#include <cmath>
+#include <ctime>
+using namespace std;
+
+double Norm2(double** A, int M, int N)
+{
+	double norm = 0.0;
+	for (int i = 0; i < M; i++)
+	{
+		for (int j = 0; j < N; j++)
+			if (j == 0 || abs(A[i][j]) > norm) norm = abs(A[i][j]);
+		A[i][0] = norm;
+	}
+	return **A;
+}
+
+int main()
+{
+	srand((int)time(0));
+	int M, N;
+	cout << "Enter M: "; cin >> M;
+	cout << "Enter N: "; cin >> N;
+
+	double **A = new double*[M];
+	for (int i = 0; i < M; i++)
+		A[i] = new double[N];
+
+	for (int i = 0; i < M; i++)
+	{
+		for (int j = 0; j < N; j++)
+		{
+			A[i][j] = rand() % 19 - 9;
+			cout << setw(2) << A[i][j] << " ";
+		}
+		cout << endl;
+	}
+	cout << endl;
+
+	Norm2(A, M, N);
+
+	for (int i = 0; i < M; i++)
+		cout << A[i][0] << " ";
+	cout << endl;
+
+	for (int i = 0; i < M; i++)
+		delete[] A[i];
+	delete[] A;
+	system("pause");
+	return 0;
+}
+
+Задание 2. Описать функцию PosK(S0, S, K) целого типа, возвращающую номер позиции, начиная с которой в строке S содержится K-е вхождение подстроки S0 (K > 0). Если количество вхождений S0 в строке S меньше K, то функция возвращает 0. Считать, что перекрывающихся вхождений подстрок S0 строка S не содержит. Вывести значения этой функции для пяти данных троек: S0, S и K.
+#include <iostream>
+#include <cstring>
+
+using namespace std;
+
+int PosK(string s0, string s, int k)
+{
+	int temp_k = 0;
+	for (int i = 0; i < s.size(); i++)
+	{
+		if (s0.compare(s.substr(i, s0.size())) == 0)
+		{
+			temp_k++;
+			if (temp_k == k) return i + 1;
+		}
+	}
+	return 0;
+}
+
+int main()
+{
+
+	cout << PosK("p", "rrprpsq", 3);
+	return 0;
+}
+
+Задание 3. Описать рекурсивную функцию DigitSum(K) целого типа, которая находит сумму цифр целого числа K, не используя оператор цикла. С помощью этой функции найти суммы цифр для пяти данных целых чисел.
+#include<iostream>
+
+using namespace std;
+
+int DigitSum(int k, int s)
+{
+	if(k > 0)
+	{
+		s += k % 10;
+		k = k / 10;
+		return DigitSum(k, s);
+		DigitSum(k, s);
+	}
+	return s;
+}
+
+int main()
+{
+	for (int i = 0; i < 5; i++)
+	{
+		int k, s = 0;
+		cout << "enter k = ";
+		cin >> k;
+
+		cout << "sum = " << DigitSum(k, s) << endl;
+	}
+	return 0;
+}
